@@ -1,27 +1,27 @@
 import pytest
 from django.core.exceptions import ValidationError
 
-from content.models import Study
+from content.models import Job
 from tests.constants import client
 
 
-def test_study_dates_validation():
+def test_job_dates_validation():
     """
     Test that ValidationError exception is raised
-    when a study is created with an end date
+    when a job is created with an end date
     that is prior to the start date
     """
 
-    study = Study(
-        name="Study 1",
-        school="School 1",
+    job = Job(
+        name="Job 1",
+        company="Company 1",
         description="Description 1",
         start_date="2024-02-01",
         end_date="2024-01-01",
     )
 
     with pytest.raises(ValidationError) as exc_info:
-        study.save()
+        job.save()
 
     assert (
         exc_info.value.messages[0]
@@ -30,32 +30,32 @@ def test_study_dates_validation():
 
 
 @pytest.mark.django_db
-def test_get_studies():
+def test_get_jobs():
     """
     Test that the GET method on
-    /api/studies returns all studies
+    /api/jobs returns all jobs
     """
 
-    studies_to_create = [
+    jobs_to_create = [
         {
-            "name": "Study 1",
-            "school": "School 1",
+            "name": "Job 1",
+            "company": "Company 1",
             "description": "Description 1",
             "start_date": "2024-01-01",
             "end_date": "2024-01-01",
         },
         {
-            "name": "Study 2",
-            "school": "School 2",
+            "name": "Job 2",
+            "company": "Company 2",
             "description": "Description 2",
             "start_date": "2024-02-01",
             "end_date": None,
         },
     ]
 
-    Study.objects.bulk_create([Study(**study) for study in studies_to_create])
+    Job.objects.bulk_create([Job(**job) for job in jobs_to_create])
 
-    response = client.get("/studies")
+    response = client.get("/jobs")
 
     assert response.status_code == 200
-    assert response.json() == studies_to_create
+    assert response.json() == jobs_to_create
