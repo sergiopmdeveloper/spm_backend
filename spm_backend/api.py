@@ -1,8 +1,8 @@
 from django.core.handlers.wsgi import WSGIRequest
 from ninja import NinjaAPI
 
-from content.models import Study
-from content.schemas import StudyOut
+from content.models import Job, Study
+from content.schemas import JobOut, StudyOut
 
 api = NinjaAPI()
 
@@ -19,3 +19,17 @@ def get_studies(request: WSGIRequest):
     """
 
     return Study.objects.all()
+
+
+@api.get("/jobs", response=list[JobOut])
+def get_jobs(request: WSGIRequest):
+    """
+    Get jobs
+
+    Parameters
+    ----------
+    request : WSGIRequest
+        The request object, not used
+    """
+
+    return Job.objects.all()
