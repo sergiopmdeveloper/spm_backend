@@ -14,3 +14,15 @@ class StudyOut(Schema):
     description: str
     start_date: date
     end_date: Optional[date] = None
+
+
+class JobOut(Schema):
+    """
+    Job out schema
+    """
+
+    name: str
+    company: str
+    description: str
+    start_date: date
+    end_date: Optional[date] = None
