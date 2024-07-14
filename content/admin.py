@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Job, Study
+from .models import Job, Project, Study
 
 
 @admin.register(Study)
@@ -35,3 +35,12 @@ class JobAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    """
+    Project admin
+    """
+
+    list_display = ("name", "description", "technologies", "link")

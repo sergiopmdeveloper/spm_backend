@@ -98,3 +98,22 @@ class Job(models.Model):
         self._validate_fields()
 
         super().save(*args, **kwargs)
+
+
+class Project(models.Model):
+    """
+    Project model
+    """
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    technologies = models.CharField(max_length=255)
+    link = models.URLField()
+
+    class Meta:
+        """
+        Metadata options
+        """
+
+        db_table = "projects"
+        verbose_name_plural = "Projects"
