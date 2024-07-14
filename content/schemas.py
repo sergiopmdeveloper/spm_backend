@@ -26,3 +26,14 @@ class JobOut(Schema):
     description: str
     start_date: date
     end_date: Optional[date] = None
+
+
+class ProjectOut(Schema):
+    """
+    Project out schema
+    """
+
+    name: str
+    description: str
+    technologies: str
+    link: str
