@@ -3,6 +3,7 @@ from ninja import NinjaAPI
 
 from content.models import Job, Project, Study
 from content.schemas import JobOut, ProjectOut, StudyOut
+from utils.email import EmailHandler
 
 api = NinjaAPI()
 
@@ -47,3 +48,21 @@ def get_projects(request: WSGIRequest):
     """
 
     return Project.objects.all()
+
+
+@api.post("/email")
+def send_email(request: WSGIRequest):
+    """
+    Send email
+
+    Parameters
+    ----------
+    request : WSGIRequest
+        The request object, not used
+    """
+
+    email_handler = EmailHandler()
+
+    sent_email = email_handler.send_email()
+
+    return sent_email
