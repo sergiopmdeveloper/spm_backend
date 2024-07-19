@@ -2,8 +2,28 @@ import os
 
 import resend
 from dotenv import load_dotenv
+from ninja import Schema
 
 load_dotenv()
+
+
+class EmailIn(Schema):
+    """
+    Email in schema
+    """
+
+    name: str
+    email: str
+    motivation: str
+    message: str
+
+
+class EmailResponse(Schema):
+    """
+    Email response schema
+    """
+
+    email_id: str
 
 
 class EmailHandler:
@@ -13,20 +33,35 @@ class EmailHandler:
 
     API_KEY = os.environ.get("RESEND_API_KEY")
 
-    def send_email(self) -> resend.Email:
+    def send_email(self, email: EmailIn) -> EmailResponse:
         """
-        TODO - To be implemented...
+        Send email
+
+        Parameters
+        ----------
+        email : EmailIn
+            The email object
+
+        Returns
+        -------
+        EmailResponse
+            The email response
         """
 
         resend.api_key = self.API_KEY
 
         params: resend.Emails.SendParams = {
-            "from": "Sergio <sergio.pm.developer@gmail.com>",
+            "from": "SPM <onboarding@resend.dev>",
             "to": ["sergio.pm.developer@gmail.com"],
-            "subject": "Development",
-            "html": "<strong>Implementation works!</strong>",
+            "subject": email.motivation,
+            "html": f"""
+                <div>
+                    <h1>{email.email}</h1>
+                    <p>{email.message}</p>
+                </div>
+            """,
         }
 
-        email = resend.Emails.send(params)
+        email_sent = resend.Emails.send(params)
 
-        return email
+        return EmailResponse(email_id=email_sent["id"])
