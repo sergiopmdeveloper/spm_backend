@@ -3,7 +3,8 @@ from ninja import NinjaAPI
 
 from content.models import Job, Project, Study
 from content.schemas import JobOut, ProjectOut, StudyOut
-from utils.email import EmailHandler, EmailIn, EmailResponse
+from utils.email.email import EmailHandler
+from utils.email.schemas import EmailIn, EmailResponse
 
 api = NinjaAPI()
 
