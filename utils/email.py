@@ -26,6 +26,14 @@ class EmailResponse(Schema):
     email_id: str
 
 
+email_template = """
+    <div>
+        <h2>You have received a message from {email}</h2>
+        <p>The message reads as follows: <i>"{message}"</i></p>
+    </div>
+"""
+
+
 class EmailHandler:
     """
     Email handler
@@ -53,13 +61,8 @@ class EmailHandler:
         params: resend.Emails.SendParams = {
             "from": "SPM <onboarding@resend.dev>",
             "to": ["sergio.pm.developer@gmail.com"],
-            "subject": email.motivation,
-            "html": f"""
-                <div>
-                    <h1>{email.email}</h1>
-                    <p>{email.message}</p>
-                </div>
-            """,
+            "subject": f"SPM: {email.motivation}",
+            "html": email_template.format(email=email.email, message=email.message),
         }
 
         email_sent = resend.Emails.send(params)
