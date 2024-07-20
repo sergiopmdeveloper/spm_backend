@@ -14,7 +14,7 @@ class EmailHandler:
     Email handler
     """
 
-    API_KEY = os.environ.get("RESEND_API_KEY")
+    __API_KEY = os.environ.get("RESEND_API_KEY")
 
     def send_email(self, email: EmailIn) -> EmailResponse:
         """
@@ -31,12 +31,12 @@ class EmailHandler:
             The email response
         """
 
-        resend.api_key = self.API_KEY
+        resend.api_key = self.__API_KEY
 
         params: resend.Emails.SendParams = {
-            "from": "SPM <onboarding@resend.dev>",
+            "from": f"{email.name} <onboarding@resend.dev>",
             "to": ["sergio.pm.developer@gmail.com"],
-            "subject": f"SPM: {email.motivation}",
+            "subject": f"{email.motivation}",
             "html": EMAIL_TEMPLATE.format(email=email.email, message=email.message),
         }
 
