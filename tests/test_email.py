@@ -1,5 +1,7 @@
+import json
 from unittest.mock import patch
 
+from tests.constants import client
 from utils.email.email import EmailHandler
 from utils.email.schemas import EmailIn
 
@@ -30,3 +32,26 @@ def test_send_email_response(email_in: EmailIn, email_handler: EmailHandler):
         response = email_handler.send_email(email=email_in)
 
     assert response.email_id == "1234"
+
+
+def test_send_email_endpoint():
+    """
+    Test that the POST method on /api/email
+    returns the expected response
+    """
+
+    with patch("resend.Emails.send") as mock_send:
+        mock_send.return_value = {"id": "1234"}
+
+        response = client.post(
+            "/email",
+            json={
+                "name": "Name",
+                "email": "Email",
+                "motivation": "Motivation",
+                "message": "Message",
+            },
+        )
+
+    assert response.status_code == 200
+    assert json.loads(response.content) == {"email_id": "1234"}
